@@ -42,5 +42,6 @@ Then open http://localhost:3000 in a phone-sized window. On Mac or Linux, use `.
 - [Project overview](../PROJECT_OVERVIEW.md): every feature, the architecture, what's real and what's mocked, and how to use it on a phone
 - [Prototype setup and design decisions](../prototype/README.md)
 - [Data pack guide](../README.md): what's in the CSV files
+- [Competitive research](../analysis/competitive_analysis.md), with the [data analysis](../analysis/eda.py) and [business case](../analysis/business_case.py) scripts behind the deck's figures
 
 The root `README.md` is the guide supplied with the data pack. This page is what GitHub shows first.

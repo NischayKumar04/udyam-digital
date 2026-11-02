@@ -14,7 +14,7 @@ A digital-first journey that lets a small business owner find the right telecom 
 | Order tracker, with a demo control that moves an order on | Working |
 | Talk to a person: a consented call request that appears live in the back office | Working, but no call is placed |
 | Back-office queue and lead score | Working |
-| Voice input | Built but untested. Needs a browser with speech recognition, and HTTPS on a phone |
+| Voice input | Working when tried by hand. Needs a browser with speech recognition, and HTTPS on a phone |
 | E-sign, payment, real registries, WhatsApp front end | Mocked or not built |
 
 ## Run it

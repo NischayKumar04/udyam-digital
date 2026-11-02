@@ -24,9 +24,12 @@ Thumbs.db
 /submission/
 /.claude/
 
-# Research, business case and deck scripts. The app and its tests read this one file:
+# Planning notes and deck tooling. The app and its tests read the JSON, and the deck cites the other three as its sources.
 /analysis/*
 !/analysis/kyc_expected_results.json
+!/analysis/eda.py
+!/analysis/business_case.py
+!/analysis/competitive_analysis.md
 
 # Browser test output
 /prototype/frontend/e2e/screenshots/
