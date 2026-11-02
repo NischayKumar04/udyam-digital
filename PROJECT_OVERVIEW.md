@@ -316,19 +316,19 @@ Groq allows about 8,000 tokens a minute and 200,000 a day per model, and a recom
 
 | Check | Last result |
 |---|---|
-| Backend tests | 466 pass |
+| Backend tests | 472 pass |
 | Replay of all 5,000 leads through the rules engine | 0 rule breaks, against 15% of bundles sold today |
 | Lead score on unseen leads, averaged over 200 random splits | AUC 0.71, and the top-scored 20% hold 40% of activations |
 | The 12 specimen KYC applicants, with real OCR | 12 of 12 give the expected result |
 | Browser journey in Hindi, Tamil and English | Runs with no errors |
 | Journey with all AI switched off | Works, and gives the same plan |
 | Asking for a person, through to the back office, with all AI off | 27 of 27 checks pass, in Hindi, English, Tamil and Kannada |
-| 16 test conversations on real AI, in 4 languages | 16 of 16 on the last full run |
+| 16 test conversations on real AI, in 4 languages | 16 of 16 on the best models, before the latest changes. 15 of 16 on the smaller fallback model on 2 Nov |
 | The six other languages on real AI | 6 of 6 with quota, 2 of 6 once it ran out |
 | Production build, lint, type-check | Clean |
 | App reached through the Wi-Fi address in production mode | Works, including uploads |
 
-The real-AI conversations ran before the final change (model order, and code that catches billing, CCTV and WhatsApp requests). They haven't been re-run since, because the day's quota ran out.
+The best models ran out of quota on 2 Nov, so the latest real-AI checks used only the smaller fallback model. The one conversation that failed there was fixed and re-checked on its own, along with one other that had been fixed earlier. All 16 haven't run on the best models since the latest changes, so re-run them once quota recovers.
 
 To run the tests, from `prototype/backend`:
 

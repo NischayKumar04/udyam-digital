@@ -340,6 +340,14 @@ def test_unknown_needs_from_the_model_are_ignored(model):
     assert "P23" in {item.product_id for item in result.recommendation.bundle}
 
 
+@pytest.mark.parametrize("written", ["machine monitoring", "Machine Monitoring", "machine-monitoring", " machine_monitoring "])
+def test_needs_written_loosely_still_count(model, written):
+    call = ToolCall("record_facts", {"reply": "", "business_type": "auto-parts unit", "city": "Pune", "employee_count": 85, "num_sites": 1, "has_gstin": True, "needs": [written, "machine_monitoring"]})
+    model(LlmReply("", [call]), LlmReply("Here you go."))
+    result = send_message(start_session("English").session_id, "auto-parts unit in Pune")
+    assert "P24" in {item.product_id for item in result.recommendation.bundle}
+
+
 def test_counts_set_quantities(model):
     call = ToolCall("record_facts", {"reply": "", "business_type": "salon", "city": "Delhi", "employee_count": 3, "num_sites": 1, "has_gstin": False, "needs": ["cctv"], "counts": {"cameras": 4, "mobile_lines": 2}})
     model(LlmReply("", [call]), LlmReply("Here you go."))

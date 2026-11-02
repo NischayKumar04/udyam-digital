@@ -133,6 +133,19 @@ def test_asking_for_a_person_offers_the_button_and_keeps_the_conversation_going(
     assert body["reply"].endswith("What kind of business do you run?")
 
 
+def test_the_model_cannot_promise_a_call(monkeypatch):
+    fake_model(monkeypatch, facts({"reply": "Sure, our manager will call you at 5 pm today."}))
+    body = say(new_session(), "please call me")
+    assert "manager" not in body["reply"]
+    assert "our team will call you" in body["reply"]
+
+
+def test_the_system_prompt_is_not_changed_by_this_feature():
+    """A sentence about the button here made the smaller models stop short on Tamil, so code handles it instead."""
+    assert "button" not in advisor.SYSTEM_PROMPT
+    assert "call" not in advisor.SYSTEM_PROMPT.replace("Always call record_facts", "")
+
+
 def test_the_offer_is_in_the_owners_language(monkeypatch):
     fake_model(monkeypatch, facts())
     body = say(new_session("Hindi"), "मुझे किसी से बात करनी है")
