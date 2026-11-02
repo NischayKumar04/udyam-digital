@@ -1,0 +1,93 @@
+"""Fixed wording for the guided flow and for explanations when the AI is unavailable.
+
+These run with no AI, so a rate limit can't stop the journey. Languages without their
+own strings here fall back to English.
+"""
+GUIDED_LANGUAGES = ("English", "Hindi", "Tamil", "Kannada")
+
+TEXT = {
+    "English": {
+        "greeting": "Hello! I'm the Accel Business advisor. Tell me about your business and I'll suggest the right plan with one clear monthly price. What kind of business do you run, and in which city?",
+        "ai_down": "Our AI helper is busy right now, so I'll ask a few quick questions instead.",
+        "ask_business": "What kind of business do you run?",
+        "ask_staff": "How many people work there?",
+        "ask_sites": "How many locations do you have?",
+        "ask_city": "Which city are you in?",
+        "ask_gst": "Do you have GST registration? Type your GSTIN if you have it handy.",
+        "ask_needs": "What else would help your business? Pick any, then press Done.",
+        "not_understood": "Sorry, I didn't catch that. Please choose an option or type a number.",
+        "recommend": "Here's what I suggest: {items}. That's ₹{monthly} a month plus GST, so ₹{total} in all, on a {contract}-month contract. It usually goes live in about {days} days.",
+        "one_time": "There's also a one-time setup fee of ₹{setup} plus GST.",
+        "not_possible": "{name} isn't possible right now: {reason}",
+        "instead": "You could consider {name} instead.",
+        "toggle": "You can switch extras on or off below, and the price updates straight away.",
+        "shop": "Shop or store", "office": "Clinic or office", "chain": "Chain with branches", "factory": "Factory or workshop",
+        "no_gst": "No GST", "have_gst": "Yes, I have GST", "done": "Done",
+        "billing_pos": "Billing and UPI", "cctv": "CCTV", "whatsapp": "WhatsApp for customers", "website": "Website",
+        "email": "Business email", "backup": "Data backup", "antivirus": "Virus protection", "guest_wifi": "Customer Wi-Fi", "failover": "Backup internet",
+    },
+    "Hindi": {
+        "greeting": "नमस्ते! मैं Accel Business का सलाहकार हूँ। अपने व्यवसाय के बारे में बताइए, मैं सही प्लान और एक साफ़ मासिक कीमत बताऊँगा। आपका व्यवसाय क्या है और किस शहर में है?",
+        "ai_down": "हमारा AI सहायक अभी व्यस्त है, इसलिए मैं कुछ छोटे सवाल पूछूँगा।",
+        "ask_business": "आपका व्यवसाय किस तरह का है?",
+        "ask_staff": "वहाँ कितने लोग काम करते हैं?",
+        "ask_sites": "आपकी कितनी शाखाएँ या जगहें हैं?",
+        "ask_city": "आप किस शहर में हैं?",
+        "ask_gst": "क्या आपके पास GST पंजीकरण है? अगर GSTIN पास में है तो लिख दीजिए।",
+        "ask_needs": "और क्या चाहिए? जो चाहें चुनिए, फिर 'हो गया' दबाइए।",
+        "not_understood": "माफ़ कीजिए, समझ नहीं आया। कृपया कोई विकल्प चुनिए या संख्या लिखिए।",
+        "recommend": "मेरा सुझाव: {items}। कुल ₹{monthly} प्रति माह और GST, यानी कुल ₹{total}, {contract} महीने के अनुबंध पर। आमतौर पर लगभग {days} दिन में चालू हो जाता है।",
+        "one_time": "इसके अलावा ₹{setup} और GST का एक बार का सेटअप शुल्क है।",
+        "not_possible": "{name} अभी संभव नहीं है: {reason}",
+        "instead": "इसकी जगह आप {name} ले सकते हैं।",
+        "toggle": "नीचे अतिरिक्त सेवाएँ चालू या बंद कीजिए, कीमत तुरंत बदल जाएगी।",
+        "shop": "दुकान या स्टोर", "office": "क्लिनिक या ऑफ़िस", "chain": "कई शाखाओं वाला व्यवसाय", "factory": "फ़ैक्टरी या वर्कशॉप",
+        "no_gst": "GST नहीं है", "have_gst": "हाँ, GST है", "done": "हो गया",
+        "billing_pos": "बिलिंग और UPI", "cctv": "CCTV", "whatsapp": "ग्राहकों के लिए WhatsApp", "website": "वेबसाइट",
+        "email": "बिज़नेस ईमेल", "backup": "डेटा बैकअप", "antivirus": "वायरस सुरक्षा", "guest_wifi": "ग्राहकों के लिए Wi-Fi", "failover": "बैकअप इंटरनेट",
+    },
+    "Tamil": {
+        "greeting": "வணக்கம்! நான் Accel Business ஆலோசகர். உங்கள் தொழிலைப் பற்றிச் சொல்லுங்கள், சரியான திட்டத்தையும் தெளிவான மாத விலையையும் சொல்கிறேன். உங்கள் தொழில் என்ன, எந்த நகரத்தில் உள்ளது?",
+        "ai_down": "எங்கள் AI உதவியாளர் இப்போது பிஸியாக உள்ளது, அதனால் சில சிறிய கேள்விகள் கேட்கிறேன்.",
+        "ask_business": "உங்கள் தொழில் எந்த வகையானது?",
+        "ask_staff": "அங்கு எத்தனை பேர் வேலை செய்கிறார்கள்?",
+        "ask_sites": "உங்களுக்கு எத்தனை கிளைகள் உள்ளன?",
+        "ask_city": "நீங்கள் எந்த நகரத்தில் இருக்கிறீர்கள்?",
+        "ask_gst": "உங்களிடம் GST பதிவு உள்ளதா? GSTIN இருந்தால் தட்டச்சு செய்யுங்கள்.",
+        "ask_needs": "வேறு என்ன தேவை? வேண்டியதைத் தேர்ந்தெடுத்து 'முடிந்தது' அழுத்துங்கள்.",
+        "not_understood": "மன்னிக்கவும், புரியவில்லை. ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும் அல்லது எண்ணைத் தட்டச்சு செய்யவும்.",
+        "recommend": "என் பரிந்துரை: {items}. மாதம் ₹{monthly} மற்றும் GST, மொத்தம் ₹{total}, {contract} மாத ஒப்பந்தத்தில். பொதுவாக சுமார் {days} நாட்களில் செயல்படத் தொடங்கும்.",
+        "one_time": "மேலும் ஒருமுறை அமைப்புக் கட்டணம் ₹{setup} மற்றும் GST உண்டு.",
+        "not_possible": "{name} இப்போது சாத்தியமில்லை: {reason}",
+        "instead": "அதற்குப் பதிலாக {name} எடுக்கலாம்.",
+        "toggle": "கீழே கூடுதல் சேவைகளை இயக்கலாம் அல்லது நிறுத்தலாம், விலை உடனே மாறும்.",
+        "shop": "கடை", "office": "கிளினிக் அல்லது அலுவலகம்", "chain": "பல கிளைகள் கொண்ட தொழில்", "factory": "தொழிற்சாலை அல்லது பட்டறை",
+        "no_gst": "GST இல்லை", "have_gst": "ஆம், GST உள்ளது", "done": "முடிந்தது",
+        "billing_pos": "பில்லிங் மற்றும் UPI", "cctv": "CCTV", "whatsapp": "வாடிக்கையாளர்களுக்கு WhatsApp", "website": "இணையதளம்",
+        "email": "வணிக மின்னஞ்சல்", "backup": "தரவு காப்பு", "antivirus": "வைரஸ் பாதுகாப்பு", "guest_wifi": "வாடிக்கையாளர் Wi-Fi", "failover": "மாற்று இணையம்",
+    },
+    "Kannada": {
+        "greeting": "ನಮಸ್ಕಾರ! ನಾನು Accel Business ಸಲಹೆಗಾರ. ನಿಮ್ಮ ವ್ಯವಹಾರದ ಬಗ್ಗೆ ಹೇಳಿ, ಸರಿಯಾದ ಯೋಜನೆ ಮತ್ತು ಸ್ಪಷ್ಟ ಮಾಸಿಕ ಬೆಲೆಯನ್ನು ತಿಳಿಸುತ್ತೇನೆ. ನಿಮ್ಮ ವ್ಯವಹಾರ ಯಾವುದು ಮತ್ತು ಯಾವ ನಗರದಲ್ಲಿದೆ?",
+        "ai_down": "ನಮ್ಮ AI ಸಹಾಯಕ ಈಗ ಕಾರ್ಯನಿರತವಾಗಿದೆ, ಆದ್ದರಿಂದ ಕೆಲವು ಸಣ್ಣ ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳುತ್ತೇನೆ.",
+        "ask_business": "ನಿಮ್ಮ ವ್ಯವಹಾರ ಯಾವ ರೀತಿಯದು?",
+        "ask_staff": "ಅಲ್ಲಿ ಎಷ್ಟು ಜನ ಕೆಲಸ ಮಾಡುತ್ತಾರೆ?",
+        "ask_sites": "ನಿಮಗೆ ಎಷ್ಟು ಶಾಖೆಗಳಿವೆ?",
+        "ask_city": "ನೀವು ಯಾವ ನಗರದಲ್ಲಿದ್ದೀರಿ?",
+        "ask_gst": "ನಿಮ್ಮ ಬಳಿ GST ನೋಂದಣಿ ಇದೆಯೇ? GSTIN ಇದ್ದರೆ ಟೈಪ್ ಮಾಡಿ.",
+        "ask_needs": "ಇನ್ನೇನು ಬೇಕು? ಬೇಕಾದವನ್ನು ಆರಿಸಿ, ನಂತರ 'ಮುಗಿಯಿತು' ಒತ್ತಿ.",
+        "not_understood": "ಕ್ಷಮಿಸಿ, ಅರ್ಥವಾಗಲಿಲ್ಲ. ಒಂದು ಆಯ್ಕೆಯನ್ನು ಆರಿಸಿ ಅಥವಾ ಸಂಖ್ಯೆ ಟೈಪ್ ಮಾಡಿ.",
+        "recommend": "ನನ್ನ ಸಲಹೆ: {items}. ತಿಂಗಳಿಗೆ ₹{monthly} ಮತ್ತು GST, ಒಟ್ಟು ₹{total}, {contract} ತಿಂಗಳ ಒಪ್ಪಂದದಲ್ಲಿ. ಸಾಮಾನ್ಯವಾಗಿ ಸುಮಾರು {days} ದಿನಗಳಲ್ಲಿ ಶುರುವಾಗುತ್ತದೆ.",
+        "one_time": "ಜೊತೆಗೆ ₹{setup} ಮತ್ತು GST ಒಂದು ಬಾರಿಯ ಸೆಟಪ್ ಶುಲ್ಕ ಇದೆ.",
+        "not_possible": "{name} ಈಗ ಸಾಧ್ಯವಿಲ್ಲ: {reason}",
+        "instead": "ಅದರ ಬದಲು {name} ತೆಗೆದುಕೊಳ್ಳಬಹುದು.",
+        "toggle": "ಕೆಳಗೆ ಹೆಚ್ಚುವರಿ ಸೇವೆಗಳನ್ನು ಆನ್ ಅಥವಾ ಆಫ್ ಮಾಡಬಹುದು, ಬೆಲೆ ತಕ್ಷಣ ಬದಲಾಗುತ್ತದೆ.",
+        "shop": "ಅಂಗಡಿ", "office": "ಕ್ಲಿನಿಕ್ ಅಥವಾ ಕಚೇರಿ", "chain": "ಹಲವು ಶಾಖೆಗಳ ವ್ಯವಹಾರ", "factory": "ಕಾರ್ಖಾನೆ ಅಥವಾ ವರ್ಕ್‌ಶಾಪ್",
+        "no_gst": "GST ಇಲ್ಲ", "have_gst": "ಹೌದು, GST ಇದೆ", "done": "ಮುಗಿಯಿತು",
+        "billing_pos": "ಬಿಲ್ಲಿಂಗ್ ಮತ್ತು UPI", "cctv": "CCTV", "whatsapp": "ಗ್ರಾಹಕರಿಗೆ WhatsApp", "website": "ವೆಬ್‌ಸೈಟ್",
+        "email": "ವ್ಯವಹಾರ ಇಮೇಲ್", "backup": "ಡೇಟಾ ಬ್ಯಾಕಪ್", "antivirus": "ವೈರಸ್ ರಕ್ಷಣೆ", "guest_wifi": "ಗ್ರಾಹಕರ Wi-Fi", "failover": "ಬ್ಯಾಕಪ್ ಇಂಟರ್ನೆಟ್",
+    },
+}
+
+
+def text(language: str, key: str) -> str:
+    return TEXT.get(language, TEXT["English"])[key]

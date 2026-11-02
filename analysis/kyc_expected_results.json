@@ -1,0 +1,419 @@
+{
+  "_note": "Fields transcribed by hand from kyc_documents/*.png and cross-checked against the mock registries and smb_leads.csv, with 2026-07-15 as 'today'. Verdicts are our own reading of the planted problems; the official answer key is judges-only. Use this file as a test fixture for the Smart KYC pipeline.",
+  "verdict_legend": {
+    "PASS": "All hard checks pass",
+    "PASS_WITH_WARNING": "Passes, but a soft check needs a human glance",
+    "AUTO_RESOLVE": "Gap that a registry lookup can close without asking the customer",
+    "REUPLOAD": "Ask the customer for a better or newer document",
+    "MANUAL_REVIEW": "Possible mismatch or tampering; route to a back-office reviewer",
+    "REJECT": "Cannot proceed on this registration"
+  },
+  "applicants": [
+    {
+      "id": "K01",
+      "lead_id": "L00045",
+      "business": "Vindhya Tours & Travels",
+      "constitution": "Proprietorship",
+      "gst_certificate": {
+        "gstin": "37IHKXV5167L1ZS",
+        "legal_name": "Neha Kaur (Prop. Vindhya Tours & Travels)",
+        "trade_name": "Vindhya Tours & Travels",
+        "address": "Shop/Unit 1, Tech Park Road, Visakhapatnam, Andhra Pradesh - 118383",
+        "date_of_liability": "2025-06-07"
+      },
+      "udyam_certificate": {
+        "udyam_number": null,
+        "enterprise_name": "Vindhya Tours & Travels",
+        "city": "Visakhapatnam",
+        "state": "Andhra Pradesh"
+      },
+      "signatory_id": {
+        "name": "Neha Kaur",
+        "designation": "Office admin",
+        "id_no": "SYN-ID-346190",
+        "valid_till": "2028-03-26"
+      },
+      "address_proof": {
+        "billed_to": "Vindhya Tours & Travels",
+        "bill_date": "2026-06-26"
+      },
+      "flags": [
+        "GSTIN status in registry is Cancelled",
+        "Udyam registration number is blank on the certificate",
+        "Do not match Udyam by name: the only same-name Udyam (UDYAM-TS-00-8751054) is a different business in Hyderabad",
+        "Soft: designation 'Office admin' (name does match the proprietor)"
+      ],
+      "expected_verdict": "REJECT"
+    },
+    {
+      "id": "K02",
+      "lead_id": "L01287",
+      "business": "Harmony Dental Care",
+      "constitution": "Proprietorship",
+      "gst_certificate": {
+        "gstin": "19EOGXH4115Y1ZL",
+        "legal_name": "Joseph Shah (Prop. Harmony Dental Care)",
+        "trade_name": "Harmony Dental Care",
+        "address": "Shop/Unit 199, Station Road, Kolkata, West Bengal - 347550",
+        "date_of_liability": "2022-04-17"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-WB-00-5053330",
+        "enterprise_name": "Harmony Dental Care",
+        "city": "Kolkata",
+        "state": "West Bengal"
+      },
+      "signatory_id": {
+        "name": "Joseph Shah",
+        "designation": "Manager",
+        "id_no": "SYN-ID-816907",
+        "valid_till": "2028-09-10"
+      },
+      "address_proof": {
+        "billed_to": "Harmony Dental Care",
+        "bill_date": "2026-05-22"
+      },
+      "flags": [
+        "GST certificate image is rotated/skewed: deskew before OCR (image is 1446x1894, not 1240x1754)",
+        "Soft: designation 'Manager' (name does match the proprietor)"
+      ],
+      "expected_verdict": "PASS_WITH_WARNING"
+    },
+    {
+      "id": "K03",
+      "lead_id": "L03571",
+      "business": "Ganesh Woodcraft",
+      "constitution": "Proprietorship",
+      "gst_certificate": {
+        "gstin": "27XUIXG0767D1ZP",
+        "legal_name": "Joseph Singh (Prop. Ganesh Woodcraft)",
+        "trade_name": "Ganesh Woodcraft",
+        "address": "Shop/Unit 80, Civil Lines, Nagpur, Maharashtra - 411231",
+        "date_of_liability": "2020-02-10"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-MH-00-9516696",
+        "enterprise_name": "Ganesh Woodcraft",
+        "city": "Nagpur",
+        "state": "Maharashtra"
+      },
+      "signatory_id": {
+        "name": "Joseph Singh",
+        "designation": "Owner",
+        "id_no": "SYN-ID-447889",
+        "valid_till": "2028-07-04"
+      },
+      "address_proof": {
+        "billed_to": "Ganesh Woodcraft",
+        "bill_date": "2026-05-30"
+      },
+      "flags": [],
+      "expected_verdict": "PASS"
+    },
+    {
+      "id": "K04",
+      "lead_id": "L01014",
+      "business": "Saffron Dental Care LLP",
+      "constitution": "Limited Liability Partnership",
+      "gst_certificate": {
+        "gstin": "unreadable (registry/lead: 27PZSXS1936O1ZH)",
+        "legal_name": "Saffron Dental Care LLP",
+        "trade_name": "Saffron Dental Care LLP",
+        "address": "Shop/Unit 75, Lake View Colony, Nagpur, Maharashtra - 137452",
+        "date_of_liability": "2020-05-12"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-MH-00-6131836",
+        "enterprise_name": "Saffron Dental Care LLP",
+        "city": "Nagpur",
+        "state": "Maharashtra"
+      },
+      "signatory_id": {
+        "name": "Fatima Pillai",
+        "designation": "Partner",
+        "id_no": "SYN-ID-609396",
+        "valid_till": "2028-08-03"
+      },
+      "address_proof": {
+        "billed_to": "Saffron Dental Care LLP",
+        "bill_date": "2026-05-28"
+      },
+      "flags": [
+        "GST certificate is blurred and unreadable (Laplacian variance ~1 vs ~1,200 on clean scans)",
+        "Can be closed by a GSTIN lookup on the number the customer types or the lead record holds"
+      ],
+      "expected_verdict": "REUPLOAD"
+    },
+    {
+      "id": "K05",
+      "lead_id": "L04014",
+      "business": "Balaji Realty LLP",
+      "constitution": "Limited Liability Partnership",
+      "gst_certificate": {
+        "gstin": "32TZAXB5481U1Z1",
+        "legal_name": "Balaji Realty LLP",
+        "trade_name": "Balaji Realty LLP",
+        "address": "Shop/Unit 38, Civil Lines, Kochi, Kerala - 752083",
+        "date_of_liability": "2020-07-26"
+      },
+      "udyam_certificate": null,
+      "signatory_id": {
+        "name": "Anita Shah",
+        "designation": "Owner",
+        "id_no": "SYN-ID-587234",
+        "valid_till": "2029-09-11"
+      },
+      "address_proof": {
+        "billed_to": "Balaji Realty LLP",
+        "bill_date": "2026-06-11"
+      },
+      "flags": [
+        "Udyam certificate not uploaded",
+        "Lead record holds UDYAM-KL-00-5521886, which the registry confirms (Balaji Realty LLP, Kochi): fetch it instead of asking",
+        "Soft: designation 'Owner' on an LLP (expect Partner/Designated Partner)"
+      ],
+      "expected_verdict": "AUTO_RESOLVE"
+    },
+    {
+      "id": "K06",
+      "lead_id": "L00115",
+      "business": "Saffron Unisex Salon",
+      "constitution": "Proprietorship",
+      "gst_certificate": {
+        "gstin": "08YKZXS8189L1ZO",
+        "legal_name": "Pooja Shah (Prop. Saffron Unisex Salon)",
+        "trade_name": "Saffron Unisex Salon",
+        "address": "Shop/Unit 71, Market Yard, Jaipur, Rajasthan - 194057",
+        "date_of_liability": "2019-09-25"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-RJ-00-6577157",
+        "enterprise_name": "Saffron Unisex Salon",
+        "city": "Jaipur",
+        "state": "Rajasthan"
+      },
+      "signatory_id": {
+        "name": "Pooja Shah",
+        "designation": "Owner",
+        "id_no": "SYN-ID-118354",
+        "valid_till": "2028-09-15"
+      },
+      "address_proof": {
+        "billed_to": "Saffron Unisex Salon",
+        "bill_date": "2026-06-11"
+      },
+      "flags": [
+        "GSTIN on certificate fails the checksum (expected check character 'I', found 'O')",
+        "GSTIN not found in registry; registry and lead hold 08YKZXS5189L1ZO (one digit differs: 5 -> 8), so this looks like an altered certificate"
+      ],
+      "expected_verdict": "MANUAL_REVIEW"
+    },
+    {
+      "id": "K07",
+      "lead_id": "L03349",
+      "business": "Neelgiri Physio Clinic",
+      "constitution": "Proprietorship",
+      "gst_certificate": {
+        "gstin": "07CPCXN0398P1ZT",
+        "legal_name": "Neha Banerjee (Prop. Shri Physio Clinic)",
+        "trade_name": "Neelgiri Physio Clinic",
+        "address": "Shop/Unit 52, Transport Nagar, Delhi, Delhi - 334596",
+        "date_of_liability": "2024-01-13"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-DL-00-9565547",
+        "enterprise_name": "Neelgiri Physio Clinic",
+        "city": "Delhi",
+        "state": "Delhi"
+      },
+      "signatory_id": {
+        "name": "Neha Banerjee",
+        "designation": "Manager",
+        "id_no": "SYN-ID-178237",
+        "valid_till": "2030-05-05"
+      },
+      "address_proof": {
+        "billed_to": "Neelgiri Physio Clinic",
+        "bill_date": "2026-07-05"
+      },
+      "flags": [
+        "Legal name on certificate says 'Prop. Shri Physio Clinic'; registry says 'Prop. Neelgiri Physio Clinic' and the certificate's own trade name is Neelgiri",
+        "Soft: designation 'Manager' (name does match the proprietor)"
+      ],
+      "expected_verdict": "MANUAL_REVIEW"
+    },
+    {
+      "id": "K08",
+      "lead_id": "L03473",
+      "business": "Green Leaf Legal Associates",
+      "constitution": "Proprietorship",
+      "gst_certificate": {
+        "gstin": "24XORXG9365M1Z3",
+        "legal_name": "Joseph Rao (Prop. Green Leaf Legal Associates)",
+        "trade_name": "Green Leaf Legal Associates",
+        "address": "Shop/Unit 238, Ring Road, Vadodara, Gujarat - 348176",
+        "date_of_liability": "2018-12-01"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-GJ-00-8477445",
+        "enterprise_name": "Green Leaf Legal Associates",
+        "city": "Vadodara",
+        "state": "Gujarat"
+      },
+      "signatory_id": {
+        "name": "Joseph Rao",
+        "designation": "Office admin",
+        "id_no": "SYN-ID-393148",
+        "valid_till": "2027-09-18"
+      },
+      "address_proof": {
+        "billed_to": "Green Leaf Legal Associates",
+        "bill_date": "2026-05-26"
+      },
+      "flags": [
+        "Soft: designation 'Office admin' (name does match the proprietor)"
+      ],
+      "expected_verdict": "PASS_WITH_WARNING"
+    },
+    {
+      "id": "K09",
+      "lead_id": "L04779",
+      "business": "Kaveri Insurance Advisors",
+      "constitution": "Proprietorship",
+      "gst_certificate": {
+        "gstin": "37LDYXK0296F1ZB",
+        "legal_name": "Anita Kulkarni (Prop. Kaveri Insurance Advisors)",
+        "trade_name": "Kaveri Insurance Advisors",
+        "address": "Shop/Unit 217, Civil Lines, Visakhapatnam, Andhra Pradesh - 405337",
+        "date_of_liability": "2023-09-20"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-AP-00-9751562",
+        "enterprise_name": "Kaveri Insurance Advisors",
+        "city": "Visakhapatnam",
+        "state": "Andhra Pradesh"
+      },
+      "signatory_id": {
+        "name": "Anita Kulkarni",
+        "designation": "Office admin",
+        "id_no": "SYN-ID-126040",
+        "valid_till": "2027-12-22"
+      },
+      "address_proof": {
+        "billed_to": "Kaveri Insurance Advisors",
+        "bill_date": "2026-07-10"
+      },
+      "flags": [
+        "Soft: designation 'Office admin' (name does match the proprietor)"
+      ],
+      "expected_verdict": "PASS_WITH_WARNING"
+    },
+    {
+      "id": "K10",
+      "lead_id": "L04525",
+      "business": "Kaveri Stays LLP",
+      "constitution": "Limited Liability Partnership",
+      "gst_certificate": {
+        "gstin": "27QHJXK0658U1ZL",
+        "legal_name": "Kaveri Stays LLP",
+        "trade_name": "Kaveri Stays LLP",
+        "address": "Shop/Unit 21, Sector 14, Mumbai, Maharashtra - 570043",
+        "date_of_liability": "2022-07-13"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-MH-00-7183141",
+        "enterprise_name": "Kaveri Stays LLP",
+        "city": "Mumbai",
+        "state": "Maharashtra"
+      },
+      "signatory_id": {
+        "name": "Nisha Arora",
+        "designation": "Owner",
+        "id_no": "SYN-ID-247542",
+        "valid_till": "2029-06-01"
+      },
+      "address_proof": {
+        "billed_to": "Kaveri Stays LLP",
+        "bill_date": "2026-06-18"
+      },
+      "flags": [
+        "Signatory on ID (Nisha Arora) is not the applicant on the lead (Fatima Menon, Owner)",
+        "Soft: designation 'Owner' on an LLP; ask for proof the signatory is a partner or authorised"
+      ],
+      "expected_verdict": "MANUAL_REVIEW"
+    },
+    {
+      "id": "K11",
+      "lead_id": "L03485",
+      "business": "Trinity Bake House Pvt Ltd",
+      "constitution": "Private Limited Company",
+      "gst_certificate": {
+        "gstin": "03KGZXT1320R1ZZ",
+        "legal_name": "Trinity Bake House Pvt Ltd",
+        "trade_name": "Trinity Bake House Pvt Ltd",
+        "address": "Shop/Unit 188, Industrial Area Phase 2, Ludhiana, Punjab - 541498",
+        "date_of_liability": "2019-08-19"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-PB-00-9719478",
+        "enterprise_name": "Trinity Bake House Pvt Ltd",
+        "city": "Ludhiana",
+        "state": "Punjab"
+      },
+      "signatory_id": {
+        "name": "Vikram Pillai",
+        "designation": "Owner",
+        "id_no": "SYN-ID-440312",
+        "valid_till": "2028-12-23"
+      },
+      "address_proof": {
+        "billed_to": "Trinity Bake House Pvt Ltd",
+        "bill_date": "2025-10-31"
+      },
+      "flags": [
+        "Address proof dated 2025-10-31 is 257 days old (limit 90)",
+        "Soft: designation 'Owner' on a private limited company (expect Director or authorised signatory)"
+      ],
+      "expected_verdict": "REUPLOAD"
+    },
+    {
+      "id": "K12",
+      "lead_id": "L03558",
+      "business": "Star Electronics",
+      "constitution": "Proprietorship",
+      "gst_certificate": {
+        "gstin": "37NBLXS1145E1ZU",
+        "legal_name": "Pooja Agarwal (Prop. Star Electronics)",
+        "trade_name": "Star Electronics",
+        "address": "Shop/Unit 216, Nehru Nagar, Visakhapatnam, Andhra Pradesh - 762071",
+        "date_of_liability": "2017-01-08"
+      },
+      "udyam_certificate": {
+        "udyam_number": "UDYAM-AP-00-5186772",
+        "enterprise_name": "Star Electronics",
+        "city": "Visakhapatnam",
+        "state": "Andhra Pradesh"
+      },
+      "signatory_id": {
+        "name": "Pooja Agarwal",
+        "designation": "Owner",
+        "id_no": "SYN-ID-365512",
+        "valid_till": "2029-03-03"
+      },
+      "address_proof": {
+        "billed_to": "Star Electronics",
+        "bill_date": "2026-07-06"
+      },
+      "flags": [
+        "Name collision: two other 'Star Electronics' leads exist (Chennai, Bhopal), so match on GSTIN, never on name"
+      ],
+      "expected_verdict": "PASS"
+    }
+  ],
+  "do_not_flag": [
+    "Udyam 'date of registration' differs from the registry on all 11 certificates: generator noise, not a planted problem",
+    "Udyam 'major activity' prints Services where the registry says Trading (K06, K10, K11, K12): Udyam files trading under services",
+    "GST date of liability before July 2017 (K12): 379 registry rows have pre-2017 dates",
+    "PIN codes do not match real states: true for every document"
+  ]
+}
