@@ -23,7 +23,7 @@ NEXT_ACTIONS = {
     "Price too high": "Offer the entry bundle and show what's optional",
     "Competitor offered cheaper plan": "Compare the whole bundle, not just the internet line",
     "Decided to wait": "Check back with a reminder",
-    "Missing GST or Udyam document": "Help them with a no-GST path or registration",
+    "Missing GST or Udyam document": "Send the lookup-based KYC link, or offer the no-GST path",
     "Found paperwork too long": "Send the lookup-based KYC link",
     "Authorised signatory not available": "Send a remote e-sign link",
     "Document details did not match": "Review the mismatch and call with the fix",
@@ -39,6 +39,8 @@ NEXT_ACTIONS = {
 
 # Wrong numbers can't be recovered, and activated customers aren't leads any more.
 _NOT_WORKABLE = {"Wrong or invalid number"}
+# These can't be acted on today, so however well they score, they wait behind everyone else.
+_NOT_NOW = {"Not interested on first call", "Locked in with current provider", "Decided to wait"}
 _LOW_CONVERTING_LANGUAGES = {"Tamil", "Kannada", "Punjabi"}
 
 _REASON_LABELS = {
@@ -116,7 +118,7 @@ def _queue() -> list[dict]:
             "owner": suggested_owner(lead),
             "next_action": NEXT_ACTIONS.get(lead["drop_reason"], "Review"),
         })
-    return sorted(rows, key=lambda row: row["score"], reverse=True)
+    return sorted(rows, key=lambda row: (row["drop_reason"] in _NOT_NOW, -row["score"]))
 
 
 def queue(owner: str | None = None, limit: int = 50) -> dict:

@@ -3,7 +3,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app import advisor
-from app.backoffice import queue, score_lead, suggested_owner
+from app.backoffice import _model, queue, score_lead, suggested_owner
 from app.kyc_routes import CONSENT_NOTICE_VERSION
 from app.llm import LlmReply, LlmUnavailable, ToolCall
 from app.main import app
@@ -200,8 +200,37 @@ def test_queue_is_ranked_masked_and_actionable():
     assert [row["score"] for row in leads] == sorted((row["score"] for row in leads), reverse=True)
     assert sum(body["by_owner"].values()) == body["total"]
     assert all("*" in row["contact"] for row in leads)
-    assert all(row["next_action"] != "Review" for row in leads)
     assert body["model"]["auc"] > 0.7
+
+
+def test_every_lead_in_the_queue_has_an_action():
+    assert all(row["next_action"] != "Review" for row in queue(limit=10_000)["leads"])
+
+
+def test_leads_we_cant_act_on_today_come_after_everyone_else():
+    not_now = {"Not interested on first call", "Locked in with current provider", "Decided to wait"}
+    leads = queue(limit=10_000)["leads"]
+    waiting = [row["drop_reason"] in not_now for row in leads]
+    assert waiting == sorted(waiting) and any(waiting) and not all(waiting)
+    first_waiting = waiting.index(True)
+    for group in (leads[:first_waiting], leads[first_waiting:]):
+        scores = [row["score"] for row in group]
+        assert scores == sorted(scores, reverse=True)
+
+
+def test_the_test_figures_are_an_average_not_one_lucky_split():
+    assert _model()["holdout_metrics"]["test_splits"] >= 100
+
+
+def test_scores_average_out_to_the_real_activation_rate():
+    scores = [score_lead(lead)[0] for lead in all_leads()]
+    assert sum(scores) / len(scores) == pytest.approx(368 / 5000, abs=0.002)
+
+
+def test_no_internet_and_no_provider_have_their_own_weights():
+    coefficients = _model()["coefficients"]
+    assert "current_internet=None" in coefficients
+    assert "current_provider=None" in coefficients
 
 
 def test_queue_filters_by_owner_over_http():

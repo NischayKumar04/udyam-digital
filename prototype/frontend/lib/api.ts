@@ -130,7 +130,7 @@ export type QueueLead = {
 export type QueueView = {
   total: number;
   by_owner: Record<string, number>;
-  model: { auc: number; top_20pct_share_of_activations: number; top_20pct_rate: number; base_rate: number };
+  model: { test_splits: number; auc: number; top_20pct_share_of_activations: number; top_20pct_rate: number; base_rate: number };
   leads: QueueLead[];
 };
 

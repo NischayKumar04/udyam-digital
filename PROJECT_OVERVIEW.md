@@ -171,10 +171,12 @@ These are our own reading of the planted problems. The official answer key is wi
 - A shareable page at `/track/<order number>`, in the owner's language.
 
 ### Back office
-- 4,313 leads that didn't close from last quarter's data, ranked by how likely each is to activate.
-- For each lead: the score, why it dropped, why it's worth calling, who should call (field sales, a local partner or digital follow-up) and the next step.
-- Filters by owner, and contact names are masked.
-- The lead score was tested on leads it hadn't seen: AUC 0.75, and the top-scored 20% hold 44% of activations.
+- 4,313 leads that didn't close from last quarter's data, highest score first. Leads who said no, are locked into a contract or asked to wait come last.
+- For each lead: the score, why it dropped, why it's worth calling, who should call (field sales, a local partner or digital follow-up) and the next step. The owner and next step come from fixed rules, not the score.
+- Filters by owner, and contact names are masked. The screen shows the top 40 for each filter.
+- The score shows how often similar leads activated when they first came in. It isn't the chance of winning a dropped lead back, because the data has no win-backs to test that.
+- The score was tested on leads it hadn't seen, averaged over 200 random splits: AUC 0.71 (most splits fell between 0.68 and 0.74), and the top-scored 20% hold 40% of activations, twice the average rate.
+- On unseen leads, scores under 30% match what happened: for example, leads scored 20-30% activated 22% of the time. Only 11 leads scored 30% or more, too few to judge.
 
 ### Languages
 
@@ -301,8 +303,9 @@ Groq allows about 8,000 tokens a minute and 200,000 a day per model, and a recom
 
 | Check | Last result |
 |---|---|
-| Backend tests | 361 pass |
+| Backend tests | 366 pass |
 | Replay of all 5,000 leads through the rules engine | 0 rule breaks, against 15% of bundles sold today |
+| Lead score on unseen leads, averaged over 200 random splits | AUC 0.71, and the top-scored 20% hold 40% of activations |
 | The 12 specimen KYC applicants, with real OCR | 12 of 12 give the expected result |
 | Browser journey in Hindi, Tamil and English | Runs with no errors |
 | Journey with all AI switched off | Works, and gives the same plan |
