@@ -16,7 +16,7 @@ The AI only extracts facts and words its replies. A rules engine decides what's 
 
 ## Run it
 
-You need Python 3.10+ and Node 20+. Free keys from [Groq](https://console.groq.com/keys) and [Google AI Studio](https://aistudio.google.com/apikey) enable the AI advisor; without them, the app runs on the guided flow.
+You need Python 3.10, 3.11 or 3.12 (the OCR library won't install on 3.13 or later) and Node 20.9 or later. Free keys from [Groq](https://console.groq.com/keys) and [Google AI Studio](https://aistudio.google.com/apikey), added to `prototype/backend/.env`, enable the AI advisor. Without them, the app runs on the guided flow.
 
 ```bash
 cd prototype/backend

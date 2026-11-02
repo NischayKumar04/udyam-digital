@@ -18,7 +18,7 @@ A digital-first journey that lets a small business owner find the right telecom 
 
 ## Run it
 
-You need Python 3.10+, Node 20+ and free API keys from [Groq](https://console.groq.com/keys) and [Google AI Studio](https://aistudio.google.com/apikey). The app still works without keys, using the guided flow.
+You need Python 3.10, 3.11 or 3.12 (the OCR library won't install on 3.13 or later), Node 20.9 or later, and free API keys from [Groq](https://console.groq.com/keys) and [Google AI Studio](https://aistudio.google.com/apikey). The app still works without keys, using the guided flow.
 
 **API**, from `prototype/backend`:
 

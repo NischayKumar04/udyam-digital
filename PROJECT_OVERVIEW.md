@@ -62,7 +62,7 @@ Run `npm run build` again after any change to the web app. The full KYC flow and
 
 ### On a new machine
 
-This was tested with Python 3.10 and Node 24 on Windows. On Mac or Linux, use `.venv/bin/python`; that path is untested.
+You need Python 3.10, 3.11 or 3.12, because the OCR library won't install on 3.13 or later, and Node 20.9 or later. This was tested with Python 3.10 and Node 24 on Windows. On Mac or Linux, use `.venv/bin/python`; that path is untested.
 
 ```bash
 cd prototype/backend
@@ -79,6 +79,8 @@ npm install
 ```
 
 Then start both as above.
+
+The first `npm run build` downloads a font from Google, so it needs a working connection. If it stops with `Can't resolve '@vercel/turbopack-next/internal/font/google/font'`, check your connection and run it again.
 
 ### A quick walkthrough
 
@@ -272,6 +274,8 @@ Know this before a demo, because the deck describes some of these as the design 
 | Lead score | **Real**, trained on the data pack |
 | GSTIN and Udyam lookups | **Mock:** backed by the pack's CSV files |
 | E-sign and payment | **Mock:** a button. Nothing is signed or charged. |
+| One bill | **Not built.** The app shows one monthly total, but produces no bill or invoice. The deck's "one bill" describes the design. |
+| Support after activation | **Not built.** There's no help screen, support number or complaint flow. The tracker only replaces calls about order status. |
 | Order progress | **Simulated** with a demo button |
 | "Updates sent to you" on the tracker | **On screen only.** No SMS or WhatsApp is sent. |
 | Site feasibility check | **Simulated** as a tracker stage. The advisor just asks the owner about fibre. |
