@@ -8,14 +8,29 @@ from dataclasses import asdict
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from .advisor import SUPPORTED_LANGUAGES, AdvisorReply, UnknownSession, erase_session, get_session, send_message, start_session
+from .advisor import (
+    SESSION_TTL,
+    SUPPORTED_LANGUAGES,
+    AdvisorReply,
+    UnknownSession,
+    cancel_callback,
+    erase_session,
+    get_session,
+    mark_ordered,
+    request_callback,
+    send_message,
+    start_session,
+)
 from .backoffice import queue
+from .identifiers import mask_mobile, normalize_mobile
 from .kyc_routes import application_verdict
 from .orders import OrderBlocked, advance, create_order, get_order, order_view
 from .pricing import LineItem, Quote, build_quote
 from .profile import resolve_profile
 
 router = APIRouter(prefix="/api", tags=["journey"])
+
+CALL_NOTICE_VERSION = "2026-11-v1"
 
 
 class StartSession(BaseModel):
@@ -38,6 +53,12 @@ class CreateOrder(BaseModel):
     contract_months: int | None = None
 
 
+class CallRequest(BaseModel):
+    mobile: str
+    consent_accepted: bool
+    notice_version: str
+
+
 def _session_or_404(session_id: str):
     try:
         return get_session(session_id)
@@ -54,6 +75,7 @@ def _reply_out(reply: AdvisorReply) -> dict:
         "multi_select": reply.multi_select,
         "expects": reply.expects,
         "recommendation": reply.recommendation.model_dump() if reply.recommendation else None,
+        "offer_person": reply.offer_person,
     }
 
 
@@ -79,11 +101,43 @@ def end(session_id: str) -> None:
     erase_session(session_id)
 
 
+@router.get("/advisor/call-notice")
+def call_notice() -> dict:
+    hours = int(SESSION_TTL.total_seconds() // 3600)
+    return {
+        "version": CALL_NOTICE_VERSION,
+        "purpose": "To call you about your plan. We won't use your number for marketing.",
+        "processing": "Your number isn't sent to any AI provider, and staff see it masked.",
+        "retention": f"We delete your number after {hours} hours or when you place your order.",
+        "rights": "You can cancel your request and have your number deleted at any time.",
+    }
+
+
+@router.post("/advisor/sessions/{session_id}/call-request", status_code=201)
+def request_call(session_id: str, body: CallRequest) -> dict:
+    session = _session_or_404(session_id)
+    if not body.consent_accepted:
+        raise HTTPException(status_code=403, detail="We can't call you without your consent.")
+    if body.notice_version != CALL_NOTICE_VERSION:
+        raise HTTPException(status_code=409, detail="The notice has changed. Please read the latest version.")
+    mobile = normalize_mobile(body.mobile)
+    if mobile is None:
+        raise HTTPException(status_code=422, detail="Please enter a 10-digit mobile number.")
+    request_callback(session, mobile, body.notice_version)
+    return {"mobile": mask_mobile(mobile)}
+
+
+@router.delete("/advisor/sessions/{session_id}/call-request", status_code=204)
+def cancel_call(session_id: str) -> None:
+    cancel_callback(_session_or_404(session_id))
+
+
 @router.post("/advisor/sessions/{session_id}/quote")
 def session_quote(session_id: str, body: SessionQuote) -> Quote:
     session = _session_or_404(session_id)
     if session.request is None:
         raise HTTPException(status_code=409, detail="There's no recommendation yet.")
+    session.saw_price = True
     resolved = resolve_profile(session.request.profile)
     try:
         return build_quote(body.lines, resolved.facts, resolved.segment, body.contract_months, session.language)
@@ -104,6 +158,7 @@ def place_order(body: CreateOrder) -> dict:
         raise HTTPException(status_code=409, detail=str(error)) from error
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
+    mark_ordered(session)
     return order_view(order)
 
 

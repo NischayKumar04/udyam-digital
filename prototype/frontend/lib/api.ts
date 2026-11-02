@@ -74,6 +74,7 @@ export type AdvisorReply = {
   multi_select: boolean;
   expects: string | null;
   recommendation: Recommendation | null;
+  offer_person: boolean;
 };
 
 export type DocumentView = {
@@ -115,22 +116,28 @@ export type QueueLead = {
   lead_id: string;
   business: string;
   contact: string;
-  segment: string;
+  segment: string | null;
   city: string;
   language: string;
   source: string;
   stage: string;
   drop_reason: string;
-  score: number;
+  score: number | null;
   reasons: string[];
   owner: string;
   next_action: string;
+  live: boolean;
 };
+
+type ScoreTest = { test_splits: number; auc: number; top_20pct_share_of_activations: number; top_20pct_rate: number; base_rate: number };
 
 export type QueueView = {
   total: number;
+  live: number;
+  no_contact: number;
   by_owner: Record<string, number>;
-  model: { test_splits: number; auc: number; top_20pct_share_of_activations: number; top_20pct_rate: number; base_rate: number };
+  model: ScoreTest;
+  chat_model: ScoreTest;
   leads: QueueLead[];
 };
 

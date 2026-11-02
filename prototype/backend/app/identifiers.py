@@ -1,10 +1,11 @@
-"""GSTIN and Udyam format checks, OCR repair and masking."""
+"""GSTIN, Udyam and mobile number checks, OCR repair and masking."""
 import re
 from dataclasses import dataclass, field
 
 _ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 _GSTIN_RE = re.compile(r"^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$")
 _UDYAM_RE = re.compile(r"^UDYAM-[A-Z]{2}-\d{2}-\d{7}$")
+_MOBILE_RE = re.compile(r"(?:\+?91|0)?([6-9]\d{9})")
 
 # The 4th PAN character is the entity type. 'X' isn't a real type, but the data
 # pack's README uses it everywhere and tells us to accept it.
@@ -96,3 +97,13 @@ def mask_udyam(udyam: str) -> str:
 
 def mask_name(name: str) -> str:
     return " ".join(f"{word[0]}{'*' * (len(word) - 1)}" for word in name.split())
+
+
+def normalize_mobile(raw: str) -> str | None:
+    """The 10 digits of an Indian mobile number, or None if it isn't one."""
+    match = _MOBILE_RE.fullmatch(re.sub(r"[\s-]", "", raw or ""))
+    return match.group(1) if match else None
+
+
+def mask_mobile(mobile: str) -> str:
+    return f"{mobile[:2]}{'*' * (len(mobile) - 4)}{mobile[-2:]}"

@@ -10,7 +10,8 @@ It's a mobile-first web app:
 - **One clear monthly price**, with extras you can switch on and off
 - **Smart KYC:** consent first, registry lookups, and documents read and validated on our own server
 - **Order tracker**, so nobody has to call to chase status
-- **Back office** that ranks unclosed leads for sales staff and partners
+- **Talk to a person**, so an owner can ask for a call at any point, with consent
+- **Back office** that puts those requests first, then ranks last quarter's unclosed leads for sales staff and partners
 
 The AI only extracts facts and words its replies. A rules engine decides what's allowed and what it costs, so a conversation can't break a catalogue rule or talk a price down.
 

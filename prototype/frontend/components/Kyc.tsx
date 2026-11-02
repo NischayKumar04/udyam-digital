@@ -51,6 +51,7 @@ export default function Kyc({
   hasActiveGstin,
   onBack,
   onOrder,
+  onTalkToPerson,
 }: {
   sessionId: string;
   language: string;
@@ -59,6 +60,7 @@ export default function Kyc({
   hasActiveGstin: boolean;
   onBack: () => void;
   onOrder: (orderId: string) => void;
+  onTalkToPerson: () => void;
 }) {
   const t = translator(language);
   const [agreed, setAgreed] = useState(false);
@@ -287,6 +289,9 @@ export default function Kyc({
             </p>
             {result.verdict === "MANUAL_REVIEW" && <p className="mt-2 text-sm text-muted">{t("review_note")}</p>}
             {result.verdict === "REJECT" && <p className="mt-2 text-sm text-muted">{t("reject_note")}</p>}
+            {["REUPLOAD", "MANUAL_REVIEW", "REJECT"].includes(result.verdict) && (
+              <button onClick={onTalkToPerson} className="mt-2 text-sm font-medium text-accent underline underline-offset-2">{t("person_button")}</button>
+            )}
             {result.checks.length > 0 && (
               <ul className="mt-2 space-y-2 rounded-2xl border border-line bg-surface p-4">
                 {result.checks.map((check) => (

@@ -36,6 +36,7 @@ class _Application:
     consent_at: datetime
     language: str = "English"
     documents: dict[str, DocumentResult] = field(default_factory=dict)
+    checked_verdict: str | None = None
 
 
 _applications: dict[str, _Application] = {}
@@ -113,10 +114,12 @@ def create_application(body: CreateApplication) -> dict:
         raise HTTPException(status_code=409, detail="The consent notice has changed. Please read the latest version.")
     _purge_expired()
     applicant = body.applicant
+    application_id = uuid.uuid4().hex
     if body.advisor_session_id:
         # Identifiers the owner typed in the chat stay on the server; they don't return through the browser.
         try:
             session = get_session(body.advisor_session_id)
+            session.kyc_application_id = application_id
             applicant = applicant.model_copy(update={
                 "gstin_on_file": session.gstin or applicant.gstin_on_file,
                 "udyam_on_file": session.udyam or applicant.udyam_on_file,
@@ -124,7 +127,6 @@ def create_application(body: CreateApplication) -> dict:
             })
         except UnknownSession:
             pass
-    application_id = uuid.uuid4().hex
     _applications[application_id] = _Application(applicant, datetime.now(timezone.utc), body.language)
     return {"application_id": application_id, "retention_hours": int(RETENTION.total_seconds() // 3600)}
 
@@ -147,7 +149,9 @@ async def upload_document(application_id: str, slot: str = Form(...), file: Uplo
 @router.post("/applications/{application_id}/submit")
 def submit(application_id: str) -> KycResult:
     application = _get(application_id)
-    return localize(validate_application(dict(application.documents), application.applicant), application.language)
+    result = localize(validate_application(dict(application.documents), application.applicant), application.language)
+    application.checked_verdict = result.verdict
+    return result
 
 
 @router.get("/applications/{application_id}/requirements")
@@ -176,6 +180,13 @@ def set_install_address(application_id: str, body: InstallAddress) -> dict:
 def application_verdict(application_id: str) -> str:
     application = _get(application_id)
     return validate_application(dict(application.documents), application.applicant).verdict
+
+
+def last_checked_verdict(application_id: str) -> str | None:
+    """What the owner was last told, or None if they haven't pressed check or have erased the application."""
+    _purge_expired()
+    application = _applications.get(application_id)
+    return application.checked_verdict if application else None
 
 
 @router.delete("/applications/{application_id}", status_code=204)

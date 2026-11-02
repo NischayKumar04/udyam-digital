@@ -89,7 +89,8 @@ The first `npm run build` downloads a font from Google, so it needs a working co
 3. Press **See my price**. Switch an extra on and off, and watch the price change.
 4. Continue to documents and accept the consent screen. In the **Demo** box, choose an applicant from the table below, then press **Check my documents**.
 5. If it passes, press **E-sign and pay** and place the order. On the tracker, press **Simulate next step**.
-6. Open the back office.
+6. Start a new chat and get a plan. Press **Talk to a person**, enter any 10-digit mobile number such as `9876543210`, tick the box and send.
+7. Open the back office. That request is at the top, with a score, an owner and a next step.
 
 | Applicant | What's planted | Result |
 |---|---|---|
@@ -170,13 +171,22 @@ These are our own reading of the planted problems. The official answer key is wi
 - What's next, and a go-live date for each service.
 - A shareable page at `/track/<order number>`, in the owner's language.
 
+### Talk to a person
+- A **Talk to a person** button sits in the header on the advisor, price and documents screens. It also appears in the chat when an owner asks for a person or types a phone number, and on the documents screen when KYC finds a problem.
+- It opens a short form: a mobile number and a consent tick box, saying in the owner's language why we want the number, how long we keep it and how to cancel.
+- The number travels only through this form. A number typed into the chat is stripped and not kept, and the owner is offered the form instead.
+- The number is deleted when the owner cancels or erases the chat, when they place their order, or after 24 hours.
+
 ### Back office
-- 4,313 leads that didn't close from last quarter's data, highest score first. Leads who said no, are locked into a contract or asked to wait come last.
+- Owners who asked for a call come first, live from the app, newest first. The reason and next step depend on how far they got: for example, "Documents need fixing", or "Walk through the ₹2,545 plan".
+- Chats that got a plan but left no number can't be called, so they appear only as a count.
+- Below those, 4,313 leads that didn't close from last quarter's data, highest score first. Leads who said no, are locked into a contract or asked to wait come last.
 - For each lead: the score, why it dropped, why it's worth calling, who should call (field sales, a local partner or digital follow-up) and the next step. The owner and next step come from fixed rules, not the score.
-- Filters by owner, and contact names are masked. The screen shows the top 40 for each filter.
+- Filters by owner, and contact names and numbers are masked. The screen shows the top 40 for each filter.
 - The score shows how often similar leads activated when they first came in. It isn't the chance of winning a dropped lead back, because the data has no win-backs to test that.
 - The score was tested on leads it hadn't seen, averaged over 200 random splits: AUC 0.71 (most splits fell between 0.68 and 0.74), and the top-scored 20% hold 40% of activations, twice the average rate.
 - On unseen leads, scores under 30% match what happened: for example, leads scored 20-30% activated 22% of the time. Only 11 leads scored 30% or more, too few to judge.
+- Owners from the chat are scored by a second, smaller model, because the chat never asks for lead source, turnover or current provider. It uses business type, staff, sites, city tier, GST, language and products asked for: AUC 0.68, and the top-scored 20% hold 35% of activations. Its percentages match what happened on unseen leads too, but no lead it learned from came through a chat, so treat them as an estimate. An owner who asks for a call before the basic facts are known shows as "New".
 
 ### Languages
 
@@ -243,6 +253,7 @@ The web app is in `prototype/frontend`: `components/` holds the screens, `lib/ap
 - Extracted details expire after 24 hours.
 - Identifiers travel in request bodies, so they stay out of URLs and logs.
 - Registry lookups use exact identifiers, never names, because unrelated businesses share names.
+- A number for a call is collected only with consent, at the moment the owner asks. It never reaches an AI provider, and the API only ever returns it masked, because the back office has no login.
 
 ### Technology
 
@@ -260,6 +271,7 @@ The web app is in `prototype/frontend`: `components/` holds the screens, `lib/ap
 | Area | Endpoints |
 |---|---|
 | Advisor | `GET /api/advisor/languages`, `POST /api/advisor/sessions`, `POST /api/advisor/sessions/{id}/messages`, `POST /api/advisor/sessions/{id}/quote`, `DELETE /api/advisor/sessions/{id}` |
+| Talk to a person | `GET /api/advisor/call-notice`, `POST /api/advisor/sessions/{id}/call-request`, `DELETE /api/advisor/sessions/{id}/call-request` |
 | KYC | `GET /api/kyc/consent-notice`, `GET /api/kyc/samples`, and under `/api/kyc/applications`: `POST` to create, `POST {id}/documents`, `GET {id}/requirements`, `POST {id}/install-address`, `POST {id}/load-sample`, `POST {id}/submit`, `DELETE {id}` |
 | Orders | `POST /api/orders`, `GET /api/orders/{id}`, `POST /api/orders/{id}/advance` |
 | Back office | `GET /api/backoffice/queue` |
@@ -283,7 +295,8 @@ Know this before a demo, because the deck describes some of these as the design 
 | Site feasibility check | **Simulated** as a tracker stage. The advisor just asks the owner about fibre. |
 | Data storage | **In memory only.** Restarting the API loses all conversations, applications and orders. |
 | Login | **None.** Anyone with an order number can see that order, and the back office is open. |
-| Back-office queue | Shows **last quarter's dropped leads,** not live conversations from the app |
+| Back-office queue | Owners who asked for a call are **live from the app.** Everything below them is **last quarter's dropped leads** |
+| Talk to a person | **Real up to the back office.** No call or SMS is placed, and the number isn't verified with an OTP. Staff see it masked because there's no login, so a real version would need a login and click-to-call |
 | Partner QR credit, referrals | **Proposal in the deck,** not built |
 | DigiLocker, real registries | **Not built** |
 | WhatsApp front end | **Not built** (stretch goal) |
@@ -303,12 +316,13 @@ Groq allows about 8,000 tokens a minute and 200,000 a day per model, and a recom
 
 | Check | Last result |
 |---|---|
-| Backend tests | 366 pass |
+| Backend tests | 466 pass |
 | Replay of all 5,000 leads through the rules engine | 0 rule breaks, against 15% of bundles sold today |
 | Lead score on unseen leads, averaged over 200 random splits | AUC 0.71, and the top-scored 20% hold 40% of activations |
 | The 12 specimen KYC applicants, with real OCR | 12 of 12 give the expected result |
 | Browser journey in Hindi, Tamil and English | Runs with no errors |
 | Journey with all AI switched off | Works, and gives the same plan |
+| Asking for a person, through to the back office, with all AI off | 27 of 27 checks pass, in Hindi, English, Tamil and Kannada |
 | 16 test conversations on real AI, in 4 languages | 16 of 16 on the last full run |
 | The six other languages on real AI | 6 of 6 with quota, 2 of 6 once it ran out |
 | Production build, lint, type-check | Clean |

@@ -58,5 +58,37 @@
   "top_20pct_share_of_activations": 0.401,
   "top_20pct_rate": 0.147,
   "base_rate": 0.073
+ },
+ "chat_model": {
+  "intercept": -2.0985801016015895,
+  "coefficients": {
+   "city_tier": -0.37992,
+   "log_employees": -0.00191,
+   "num_sites": -0.00724,
+   "interest_count": -0.093,
+   "segment=Micro retail & services": -0.54605,
+   "segment=Professional offices": 0.18971,
+   "segment=Small manufacturers": 0.20814,
+   "segment=Small multi-site businesses": 0.13817,
+   "preferred_language=Bengali": 0.07404,
+   "preferred_language=English": 0.17581,
+   "preferred_language=Gujarati": -0.01946,
+   "preferred_language=Hindi": 0.21561,
+   "preferred_language=Kannada": -0.19813,
+   "preferred_language=Malayalam": 0.11017,
+   "preferred_language=Marathi": -0.08239,
+   "preferred_language=Punjabi": -0.11453,
+   "preferred_language=Tamil": -0.23188,
+   "preferred_language=Telugu": 0.06074,
+   "has_gstin=N": -0.5597,
+   "has_gstin=Y": 0.54967
+  },
+  "holdout_metrics": {
+   "test_splits": 200,
+   "auc": 0.679,
+   "top_20pct_share_of_activations": 0.349,
+   "top_20pct_rate": 0.128,
+   "base_rate": 0.073
+  }
  }
 }

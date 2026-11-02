@@ -7,6 +7,7 @@ import { LANGUAGES, translator, type StringKey } from "@/lib/i18n";
 import Advisor from "./Advisor";
 import Kyc from "./Kyc";
 import Quote, { type Selection } from "./Quote";
+import TalkToPerson from "./TalkToPerson";
 import Tracker from "./Tracker";
 
 type Step = "advisor" | "quote" | "kyc" | "track";
@@ -36,6 +37,8 @@ export default function Journey() {
   const [selection, setSelection] = useState<Selection | null>(null);
   const [quote, setQuote] = useState<QuoteData | null>(null);
   const [orderId, setOrderId] = useState<string | null>(null);
+  const [personOpen, setPersonOpen] = useState(false);
+  const [callRequested, setCallRequested] = useState<string | null>(null);
   const t = translator(language);
 
   if (!started) {
@@ -77,7 +80,14 @@ export default function Journey() {
   return (
     <div className="mx-auto flex h-dvh w-full max-w-md flex-col bg-background">
       <header className="shrink-0 border-b border-line bg-surface px-5 pb-3 pt-4">
-        <Wordmark />
+        <div className="flex items-center justify-between gap-3">
+          <Wordmark />
+          {sessionId && step !== "track" && (
+            <button onClick={() => setPersonOpen(true)} className="min-w-0 truncate text-sm font-medium text-accent underline-offset-2 hover:underline">
+              {callRequested ? t("person_requested") : t("person_button")}
+            </button>
+          )}
+        </div>
         <ol className="mt-3 flex gap-1.5" aria-label="Progress">
           {STEPS.map((s, index) => (
             <li key={s.key} className="flex-1" aria-current={s.key === step ? "step" : undefined}>
@@ -98,6 +108,7 @@ export default function Journey() {
           }}
           recommendation={recommendation}
           onContinue={() => setStep("quote")}
+          onTalkToPerson={() => setPersonOpen(true)}
         />
       </div>
 
@@ -127,12 +138,24 @@ export default function Journey() {
           onBack={() => setStep("quote")}
           onOrder={(id) => {
             setOrderId(id);
+            setCallRequested(null);
             setStep("track");
           }}
+          onTalkToPerson={() => setPersonOpen(true)}
         />
       )}
 
       {step === "track" && orderId && <Tracker orderId={orderId} language={language} />}
+
+      {personOpen && sessionId && (
+        <TalkToPerson
+          sessionId={sessionId}
+          language={language}
+          requested={callRequested}
+          onRequested={setCallRequested}
+          onClose={() => setPersonOpen(false)}
+        />
+      )}
     </div>
   );
 }

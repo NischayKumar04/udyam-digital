@@ -28,12 +28,14 @@ export default function Advisor({
   onRecommendation,
   recommendation,
   onContinue,
+  onTalkToPerson,
 }: {
   language: string;
   onSession: (id: string) => void;
   onRecommendation: (recommendation: Recommendation) => void;
   recommendation: Recommendation | null;
   onContinue: () => void;
+  onTalkToPerson: () => void;
 }) {
   const t = translator(language);
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -135,6 +137,12 @@ export default function Advisor({
               </button>
             ))}
           </div>
+        )}
+
+        {last?.offer_person && !busy && (
+          <button onClick={onTalkToPerson} className="w-full rounded-xl border border-accent/30 bg-surface px-4 py-3 text-sm font-semibold text-accent transition-colors hover:border-accent">
+            {t("person_button")}
+          </button>
         )}
 
         {recommendation && !busy && (
