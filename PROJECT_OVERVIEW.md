@@ -304,7 +304,7 @@ Know this before a demo, because the deck describes some of these as the design 
 
 Other limits:
 - Tracker dates show July 2026, because the data pack fixes "today" as 15 Jul 2026.
-- The Hindi, Tamil and Kannada wording was written by Claude and hasn't been checked by a native speaker.
+
 
 ## Free AI limits
 
@@ -336,17 +336,3 @@ To run the tests, from `prototype/backend`:
 .venv/Scripts/python -m pytest
 ```
 
-More commands are in [CLAUDE.md](CLAUDE.md) and [prototype/README.md](prototype/README.md).
-
-## What's in this repository
-
-| In the repo | What it is |
-|---|---|
-| `prototype/` | The app: `backend/` (API) and `frontend/` (web app) |
-| `product_catalogue.csv`, `smb_leads.csv`, the two `mock_*_registry.csv` files, `kyc_documents/` | The synthetic data pack, which the app reads directly |
-| `analysis/kyc_expected_results.json` | Our expected result for each KYC applicant, used by the tests and the demo box |
-| `analysis/eda.py`, `analysis/business_case.py`, `analysis/competitive_analysis.md` | The scripts and research behind the deck's figures, which the deck cites as its sources. Run the scripts from the repo root with pandas installed |
-| [`README.md`](README.md) | The data pack's column guide, supplied with the case |
-| [`CLAUDE.md`](CLAUDE.md) | Guidance for Claude Code sessions |
-
-The case PDF, the submission template, the deck, the demo script and our planning notes are kept out of the repo on purpose. `.gitignore` lists them.
